@@ -704,6 +704,7 @@ namespace StreamTrimTool
                 {
 
 
+
                     //client.DefaultRequestHeaders.Add("Content-Type", "application/x-mpegURL");
                     Uri theUri = new Uri(uri);
 
