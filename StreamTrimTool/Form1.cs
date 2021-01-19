@@ -12,8 +12,7 @@ using System.Reflection;
 
 using System.Net.Http;
 using System.IO;
-using Vlc.DotNet.Core;
-using Vlc.DotNet.Forms;
+
 
 
 
@@ -34,9 +33,24 @@ namespace StreamTrimTool
             selectedFirstSegmentIndex = -1;
             selectedLastSegmentIndex = -1;
 
+            axWindowsMediaPlayer1.PlayStateChange += AxWindowsMediaPlayer1_PlayStateChange;
+            axWindowsMediaPlayer1.uiMode = "none";
+            axWindowsMediaPlayer1.settings.volume = 100;
+
+            ShowStreamMessageBox();
+
         }
 
-        private void buttonGetStream_Click(object sender, EventArgs e)
+        private void AxWindowsMediaPlayer1_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
+        {
+            if (e.newState == 8)
+            {
+                axWindowsMediaPlayer1.Ctlcontrols.stop();
+                Console.WriteLine("Player stopped.");
+            }
+        }
+
+        private void ButtonGetStream_Click(object sender, EventArgs e)
         {
             ClearStatusStrip();
 
@@ -70,9 +84,6 @@ namespace StreamTrimTool
 
 
                 WriteMasterStream(splittedResult);
-
-
-
 
 
                 //Process Master Manifest Data...
@@ -185,7 +196,7 @@ namespace StreamTrimTool
 
                         foreach (string segmentUrl in splittedResult)
                         {
-                            if ((segmentUrl.Contains("#EXT-X-") || segmentUrl.Contains("#EXTM3U")) && !segmentUrl.Contains("#EXT-X-PROGRAM-DATE-TIME"))
+                            if ((segmentUrl.Contains("#EXT-X-") || segmentUrl.Contains("#EXTM3U")) && !segmentUrl.Contains("#EXT-X-PROGRAM-DATE-TIME") && !segmentUrl.Contains("#EXT-X-DISCONTINUITY"))
                             {
                                 string key = "";
                                 string value = "";
@@ -213,10 +224,11 @@ namespace StreamTrimTool
                             }
                             else if (segmentUrl.Contains(".ts"))
                             {
-                                Segment segmentToAdd = new Segment();
-
-                                segmentToAdd.SegmentDuration = segmentDuartion;
-                                segmentToAdd.SegmentTimestamp = segmentTimeStamp;
+                                Segment segmentToAdd = new Segment
+                                {
+                                    SegmentDuration = segmentDuartion,
+                                    SegmentTimestamp = segmentTimeStamp
+                                };
 
                                 if (segmentUrl.Contains("https://"))
                                 {
@@ -235,6 +247,10 @@ namespace StreamTrimTool
 
                                 newRenditionManifest.SegmentList.Add(segmentToAdd);
                             }
+                            else if (segmentUrl.Contains("#EXT-X-DISCONTINUITY"))
+                            {
+                                MessageBox.Show("Stream contains DISCONTINUITY tags. \nThey will be excluded from trimmed stream.", "Stream Details", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
 
                         newRenditionManifest.RenditionSettings = newRenditionSettings;
@@ -246,8 +262,10 @@ namespace StreamTrimTool
                     }
                     else if (renditionListLine.Contains(".m3u8") && renditionListLine.Contains("TYPE=AUDIO"))
                     {
-                        AudioManifest newAudioManifest = new AudioManifest();
-                        newAudioManifest.SegmentList = new List<Segment>();
+                        AudioManifest newAudioManifest = new AudioManifest
+                        {
+                            SegmentList = new List<Segment>()
+                        };
 
                         //break;
                         string[] splittedAudioGroupLine = renditionListLine.Split(',');
@@ -290,7 +308,7 @@ namespace StreamTrimTool
                         foreach (string segmentUrl in splittedResult)
                         {
                           
-                            if ((segmentUrl.Contains("#EXT-X-") || segmentUrl.Contains("#EXTM3U")) && !segmentUrl.Contains("#EXT-X-PROGRAM-DATE-TIME"))
+                            if ((segmentUrl.Contains("#EXT-X-") || segmentUrl.Contains("#EXTM3U")) && !segmentUrl.Contains("#EXT-X-PROGRAM-DATE-TIME") && !segmentUrl.Contains("#EXT-X-DISCONTINUITY"))
                             {
                                 string key = "";
                                 string value = "";
@@ -318,10 +336,11 @@ namespace StreamTrimTool
                             }
                             else if (segmentUrl.Contains(".aac"))
                             {
-                                Segment segmentToAdd = new Segment();
-
-                                segmentToAdd.SegmentDuration = segmentDuartion;
-                                segmentToAdd.SegmentTimestamp = segmentTimeStamp;
+                                Segment segmentToAdd = new Segment
+                                {
+                                    SegmentDuration = segmentDuartion,
+                                    SegmentTimestamp = segmentTimeStamp
+                                };
 
                                 if (segmentUrl.Contains("https://"))
                                 {
@@ -337,6 +356,10 @@ namespace StreamTrimTool
                                 }
 
                                 newAudioManifest.SegmentList.Add(segmentToAdd);
+                            }
+                            else if (segmentUrl.Contains("#EXT-X-DISCONTINUITY"))
+                            {
+                                MessageBox.Show("Stream contains DISCONTINUITY tags. \nThey will be excluded from trimmed stream.", "Stream Details", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
 
@@ -388,7 +411,7 @@ namespace StreamTrimTool
 
                         foreach (string segmentUrl in splittedResult)
                         {
-                            if ((segmentUrl.Contains("#EXT-X-") || segmentUrl.Contains("#EXTM3U")) && !segmentUrl.Contains("#EXT-X-PROGRAM-DATE-TIME"))
+                            if ((segmentUrl.Contains("#EXT-X-") || segmentUrl.Contains("#EXTM3U")) && !segmentUrl.Contains("#EXT-X-PROGRAM-DATE-TIME") && !segmentUrl.Contains("#EXT-X-DISCONTINUITY"))
                             {
                                 string key = "";
                                 string value = "";
@@ -416,10 +439,11 @@ namespace StreamTrimTool
                             }
                             else if (segmentUrl.Contains(".ts"))
                             {
-                                Segment segmentToAdd = new Segment();
-
-                                segmentToAdd.SegmentDuration = segmentDuartion;
-                                segmentToAdd.SegmentTimestamp = segmentTimeStamp;
+                                Segment segmentToAdd = new Segment
+                                {
+                                    SegmentDuration = segmentDuartion,
+                                    SegmentTimestamp = segmentTimeStamp
+                                };
 
                                 if (segmentUrl.Contains("https://"))
                                 {
@@ -435,6 +459,10 @@ namespace StreamTrimTool
                                 }
 
                                 newRenditionManifest.SegmentList.Add(segmentToAdd);
+                            }
+                            else if (segmentUrl.Contains("#EXT-X-DISCONTINUITY"))
+                            {
+                                MessageBox.Show("Stream contains DISCONTINUITY tags. \nThey will be excluded from trimmed stream.", "Stream Details", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
 
@@ -588,8 +616,20 @@ namespace StreamTrimTool
 
             try
             {
-                myVlcControl.Play(new Uri(vlcPlaylistEntry));
-               
+                if (vlcPlaylistEntry != null)
+                {
+                    if (vlcPlaylistEntry.Contains(".m3u8"))
+                    {
+                        ShowStreamMessageBox();
+                    }
+                    Console.WriteLine("Playing Source: " + vlcPlaylistEntry);
+                    axWindowsMediaPlayer1.URL = vlcPlaylistEntry;
+                    axWindowsMediaPlayer1.Ctlcontrols.play();
+                }
+                else
+                {
+                    MessageBox.Show("Nothing set to play! ;)  ", "Stream Preview", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             catch (Exception ex)
             {
@@ -602,7 +642,7 @@ namespace StreamTrimTool
         {
             try
             {
-                myVlcControl.Stop();
+                axWindowsMediaPlayer1.Ctlcontrols.stop();
             }
             catch(Exception ex)
             {
@@ -724,7 +764,7 @@ namespace StreamTrimTool
             }
         }
 
-        private void buttonUpload_Click(object sender, EventArgs e)
+        private void ButtonUpload_Click(object sender, EventArgs e)
         {
             try
             {
@@ -736,30 +776,30 @@ namespace StreamTrimTool
                     foreach (RenditionManifest renditionList in masterManifestList.RenditionManifests)
                     {
                         payload = renditionList.RenditionSettings["#EXTM3U"] + "\n";
-                        payload = payload + "#EXT-X-ALLOW-CACHE:" + renditionList.RenditionSettings["#EXT-X-ALLOW-CACHE"] + "\n";
-                        payload = payload + "#EXT-X-VERSION:" + renditionList.RenditionSettings["#EXT-X-VERSION"] + "\n";
-                        payload = payload + "#EXT-X-TARGETDURATION:" + renditionList.RenditionSettings["#EXT-X-TARGETDURATION"] + "\n";
-                        payload = payload + "#EXT-X-MEDIA-SEQUENCE:";
+                        payload += "#EXT-X-ALLOW-CACHE:" + renditionList.RenditionSettings["#EXT-X-ALLOW-CACHE"] + "\n";
+                        payload += "#EXT-X-VERSION:" + renditionList.RenditionSettings["#EXT-X-VERSION"] + "\n";
+                        payload += "#EXT-X-TARGETDURATION:" + renditionList.RenditionSettings["#EXT-X-TARGETDURATION"] + "\n";
+                        payload += "#EXT-X-MEDIA-SEQUENCE:";
 
                         int mediaSequence = Convert.ToInt32(renditionList.RenditionSettings["#EXT-X-MEDIA-SEQUENCE"]);
-                        mediaSequence = mediaSequence + selectedFirstSegmentIndex;
+                        mediaSequence += mediaSequence + selectedFirstSegmentIndex;
 
-                        payload = payload + mediaSequence.ToString() + "\n";
-                        payload = payload + "#EXT-X-PLAYLIST-TYPE:VOD" + "\n";
+                        payload += mediaSequence.ToString() + "\n";
+                        payload += "#EXT-X-PLAYLIST-TYPE:VOD" + "\n";
 
                         for (int i = selectedFirstSegmentIndex; i <= selectedLastSegmentIndex; i++)
                         {
 
                             if (renditionList.SegmentList[i].SegmentTimestamp != "")
                             {
-                                payload = payload + renditionList.SegmentList[i].SegmentTimestamp + "\n";
+                                payload += renditionList.SegmentList[i].SegmentTimestamp + "\n";
                             }
 
-                            payload = payload + renditionList.SegmentList[i].SegmentDuration + "\n";
-                            payload = payload + renditionList.SegmentList[i].SegmentAbsolutePath + "\n";
+                            payload += renditionList.SegmentList[i].SegmentDuration + "\n";
+                            payload += renditionList.SegmentList[i].SegmentAbsolutePath + "\n";
                         }
 
-                        payload = payload + "#EXT-X-ENDLIST";
+                        payload += "#EXT-X-ENDLIST";
 
                         if (renditionList.IngestUrl.Contains("http"))
                         {
@@ -779,30 +819,30 @@ namespace StreamTrimTool
                     foreach (AudioManifest audioRenditionList in masterManifestList.AudioManifests)
                     {
                         payload = audioRenditionList.RenditionSettings["#EXTM3U"] + "\n";
-                        payload = payload + "#EXT-X-ALLOW-CACHE:" + audioRenditionList.RenditionSettings["#EXT-X-ALLOW-CACHE"] + "\n";
-                        payload = payload + "#EXT-X-VERSION:" + audioRenditionList.RenditionSettings["#EXT-X-VERSION"] + "\n";
-                        payload = payload + "#EXT-X-TARGETDURATION:" + audioRenditionList.RenditionSettings["#EXT-X-TARGETDURATION"] + "\n";
-                        payload = payload + "#EXT-X-MEDIA-SEQUENCE:";
+                        payload += "#EXT-X-ALLOW-CACHE:" + audioRenditionList.RenditionSettings["#EXT-X-ALLOW-CACHE"] + "\n";
+                        payload += "#EXT-X-VERSION:" + audioRenditionList.RenditionSettings["#EXT-X-VERSION"] + "\n";
+                        payload += "#EXT-X-TARGETDURATION:" + audioRenditionList.RenditionSettings["#EXT-X-TARGETDURATION"] + "\n";
+                        payload += "#EXT-X-MEDIA-SEQUENCE:";
 
                         int mediaSequence = Convert.ToInt32(audioRenditionList.RenditionSettings["#EXT-X-MEDIA-SEQUENCE"]);
-                        mediaSequence = mediaSequence + selectedFirstSegmentIndex;
+                        mediaSequence += selectedFirstSegmentIndex;
 
-                        payload = payload + mediaSequence.ToString() + "\n";
-                        payload = payload + "#EXT-X-PLAYLIST-TYPE:VOD" + "\n";
+                        payload += mediaSequence.ToString() + "\n";
+                        payload += "#EXT-X-PLAYLIST-TYPE:VOD" + "\n";
 
                         for (int i = selectedFirstSegmentIndex; i <= selectedLastSegmentIndex; i++)
                         {
 
                             if (audioRenditionList.SegmentList[i].SegmentTimestamp != "")
                             {
-                                payload = payload + audioRenditionList.SegmentList[i].SegmentTimestamp + "\n";
+                                payload += audioRenditionList.SegmentList[i].SegmentTimestamp + "\n";
                             }
 
-                            payload = payload + audioRenditionList.SegmentList[i].SegmentDuration + "\n";
-                            payload = payload + audioRenditionList.SegmentList[i].SegmentAbsolutePath + "\n";
+                            payload += audioRenditionList.SegmentList[i].SegmentDuration + "\n";
+                            payload += audioRenditionList.SegmentList[i].SegmentAbsolutePath + "\n";
                         }
 
-                        payload = payload + "#EXT-X-ENDLIST";
+                        payload += "#EXT-X-ENDLIST";
 
                         if (audioRenditionList.IngestUrl.Contains("http"))
                         {
@@ -833,8 +873,10 @@ namespace StreamTrimTool
         {
             this.Invoke((MethodInvoker)delegate
             {
-                ToolStripStatusLabel newLabel = new ToolStripStatusLabel();
-                newLabel.Text = text;
+                ToolStripStatusLabel newLabel = new ToolStripStatusLabel
+                {
+                    Text = text
+                };
                 statusStrip1.Items.Add(newLabel);
             }
             );
@@ -849,7 +891,7 @@ namespace StreamTrimTool
             );
         }
 
-        private void statusStrip1_Click(object sender, EventArgs e)
+        private void StatusStrip1_Click(object sender, EventArgs e)
         {
             if (statusStrip1.Items.Count > 0)
             {
@@ -861,30 +903,10 @@ namespace StreamTrimTool
             }
         }
 
-        #region PlayerStuff
-        private void OnVlcControlNeedLibDirectory(object sender, VlcLibDirectoryNeededEventArgs e)
+        private void ShowStreamMessageBox()
         {
-            var currentAssembly = Assembly.GetEntryAssembly();
-            var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
-            if (currentDirectory == null)
-                return;
-            if (IntPtr.Size == 4)
-                e.VlcLibDirectory = new DirectoryInfo( currentDirectory + "\\libvlc_x86");
-            else
-                e.VlcLibDirectory = new DirectoryInfo( currentDirectory + "\\libvlc_x64");
-
-            if (!e.VlcLibDirectory.Exists)
-            {
-                var folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-                folderBrowserDialog.Description = "Select Vlc libraries folder.";
-                folderBrowserDialog.RootFolder = Environment.SpecialFolder.Desktop;
-                folderBrowserDialog.ShowNewFolderButton = true;
-                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-                {
-                    e.VlcLibDirectory = new DirectoryInfo(folderBrowserDialog.SelectedPath);
-                }
-            }
+            MessageBox.Show("Use Player just for Segment Preview. \nIf you play a .m3u8 the stream will be displayed choppy.", "Stream Preview", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
-        #endregion
+
     }
 }

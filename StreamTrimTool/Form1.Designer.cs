@@ -1,6 +1,5 @@
 ﻿namespace StreamTrimTool
 {
-    using Vlc.DotNet.Forms;
 
     partial class Form1
     {
@@ -31,7 +30,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.myVlcControl = new Vlc.DotNet.Forms.VlcControl();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.textBoxStreamInput = new System.Windows.Forms.TextBox();
             this.buttonGetStream = new System.Windows.Forms.Button();
@@ -44,6 +42,8 @@
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonVlcPlay = new System.Windows.Forms.Button();
             this.buttonVlcStop = new System.Windows.Forms.Button();
+            this.tableLayoutPanelPlayer = new System.Windows.Forms.TableLayoutPanel();
+            this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             this.groupBoxSettings = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.textBoxFirstSegment = new System.Windows.Forms.TextBox();
@@ -56,33 +56,17 @@
             this.textBoxMasterStream = new System.Windows.Forms.TextBox();
             this.comboBoxSegmentList = new System.Windows.Forms.ComboBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.tableLayoutPanelPlayer = new System.Windows.Forms.TableLayoutPanel();
-            ((System.ComponentModel.ISupportInitialize)(this.myVlcControl)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.groupBoxPreview.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanelPlayer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
             this.groupBoxSettings.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // myVlcControl
-            // 
-            this.myVlcControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.myVlcControl.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.myVlcControl.Location = new System.Drawing.Point(3, 3);
-            this.myVlcControl.Name = "myVlcControl";
-            this.myVlcControl.Size = new System.Drawing.Size(564, 0);
-            this.myVlcControl.Spu = -1;
-            this.myVlcControl.TabIndex = 0;
-            this.myVlcControl.Text = "vlcRincewindControl1";
-            this.myVlcControl.VlcLibDirectory = null;
-            this.myVlcControl.VlcMediaplayerOptions = null;
-            this.myVlcControl.VlcLibDirectoryNeeded += new System.EventHandler<Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs>(this.OnVlcControlNeedLibDirectory);
             // 
             // tableLayoutPanel1
             // 
@@ -134,7 +118,7 @@
             this.buttonGetStream.TabIndex = 1;
             this.buttonGetStream.Text = "Get Stream!";
             this.buttonGetStream.UseVisualStyleBackColor = true;
-            this.buttonGetStream.Click += new System.EventHandler(this.buttonGetStream_Click);
+            this.buttonGetStream.Click += new System.EventHandler(this.ButtonGetStream_Click);
             // 
             // comboBoxRenditionLists
             // 
@@ -260,6 +244,31 @@
             this.buttonVlcStop.UseVisualStyleBackColor = true;
             this.buttonVlcStop.Click += new System.EventHandler(this.ButtonVlcStop_Click);
             // 
+            // tableLayoutPanelPlayer
+            // 
+            this.tableLayoutPanelPlayer.ColumnCount = 1;
+            this.tableLayoutPanelPlayer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelPlayer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanelPlayer.Controls.Add(this.axWindowsMediaPlayer1, 0, 0);
+            this.tableLayoutPanelPlayer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelPlayer.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanelPlayer.Name = "tableLayoutPanelPlayer";
+            this.tableLayoutPanelPlayer.RowCount = 1;
+            this.tableLayoutPanelPlayer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelPlayer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 239F));
+            this.tableLayoutPanelPlayer.Size = new System.Drawing.Size(428, 239);
+            this.tableLayoutPanelPlayer.TabIndex = 2;
+            // 
+            // axWindowsMediaPlayer1
+            // 
+            this.axWindowsMediaPlayer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.axWindowsMediaPlayer1.Enabled = true;
+            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(3, 3);
+            this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
+            this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
+            this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(422, 233);
+            this.axWindowsMediaPlayer1.TabIndex = 2;
+            // 
             // groupBoxSettings
             // 
             this.groupBoxSettings.Controls.Add(this.tableLayoutPanel6);
@@ -371,7 +380,7 @@
             this.buttonUpload.TabIndex = 5;
             this.buttonUpload.Text = "Upload to Akamai";
             this.buttonUpload.UseVisualStyleBackColor = false;
-            this.buttonUpload.Click += new System.EventHandler(this.buttonUpload_Click);
+            this.buttonUpload.Click += new System.EventHandler(this.ButtonUpload_Click);
             // 
             // buttonSave
             // 
@@ -417,22 +426,7 @@
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 8;
             this.statusStrip1.Text = "statusStrip1";
-            this.statusStrip1.Click += new System.EventHandler(this.statusStrip1_Click);
-            // 
-            // tableLayoutPanelPlayer
-            // 
-            this.tableLayoutPanelPlayer.ColumnCount = 1;
-            this.tableLayoutPanelPlayer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelPlayer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelPlayer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelPlayer.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanelPlayer.Name = "tableLayoutPanelPlayer";
-            this.tableLayoutPanelPlayer.RowCount = 1;
-            this.tableLayoutPanelPlayer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelPlayer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelPlayer.Size = new System.Drawing.Size(428, 239);
-            this.tableLayoutPanelPlayer.TabIndex = 2;
-            this.tableLayoutPanelPlayer.Controls.Add(this.myVlcControl);
+            this.statusStrip1.Click += new System.EventHandler(this.StatusStrip1_Click);
             // 
             // Form1
             // 
@@ -445,7 +439,6 @@
             this.MinimumSize = new System.Drawing.Size(1600, 1100);
             this.Name = "Form1";
             this.Text = "Stream Trim Tool";
-            ((System.ComponentModel.ISupportInitialize)(this.myVlcControl)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -454,6 +447,8 @@
             this.groupBoxPreview.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanelPlayer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
             this.groupBoxSettings.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
@@ -487,8 +482,8 @@
         private System.Windows.Forms.Button buttonUpload;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private VlcControl myVlcControl;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelPlayer;
+        private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
     }
 }
 
