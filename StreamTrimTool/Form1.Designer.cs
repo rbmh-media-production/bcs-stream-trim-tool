@@ -81,29 +81,30 @@
             this.tableLayoutPanel1.Controls.Add(this.statusStrip1, 0, 10);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 11;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 2F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 2F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 58F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 2F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 67F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1584, 1061);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(3148, 1979);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // textBoxStreamInput
             // 
             this.textBoxStreamInput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxStreamInput.Location = new System.Drawing.Point(5, 18);
-            this.textBoxStreamInput.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBoxStreamInput.Location = new System.Drawing.Point(10, 35);
+            this.textBoxStreamInput.Margin = new System.Windows.Forms.Padding(10, 6, 10, 6);
             this.textBoxStreamInput.Name = "textBoxStreamInput";
-            this.textBoxStreamInput.Size = new System.Drawing.Size(1574, 20);
+            this.textBoxStreamInput.Size = new System.Drawing.Size(3128, 31);
             this.textBoxStreamInput.TabIndex = 0;
             this.textBoxStreamInput.Text = "Insert playback url here...";
             this.textBoxStreamInput.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -111,10 +112,10 @@
             // buttonGetStream
             // 
             this.buttonGetStream.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonGetStream.Location = new System.Drawing.Point(5, 45);
-            this.buttonGetStream.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.buttonGetStream.Location = new System.Drawing.Point(10, 87);
+            this.buttonGetStream.Margin = new System.Windows.Forms.Padding(10, 6, 10, 6);
             this.buttonGetStream.Name = "buttonGetStream";
-            this.buttonGetStream.Size = new System.Drawing.Size(1574, 24);
+            this.buttonGetStream.Size = new System.Drawing.Size(3128, 46);
             this.buttonGetStream.TabIndex = 1;
             this.buttonGetStream.Text = "Get Stream!";
             this.buttonGetStream.UseVisualStyleBackColor = true;
@@ -124,10 +125,10 @@
             // 
             this.comboBoxRenditionLists.Dock = System.Windows.Forms.DockStyle.Fill;
             this.comboBoxRenditionLists.FormattingEnabled = true;
-            this.comboBoxRenditionLists.Location = new System.Drawing.Point(5, 377);
-            this.comboBoxRenditionLists.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.comboBoxRenditionLists.Location = new System.Drawing.Point(10, 706);
+            this.comboBoxRenditionLists.Margin = new System.Windows.Forms.Padding(10, 6, 10, 6);
             this.comboBoxRenditionLists.Name = "comboBoxRenditionLists";
-            this.comboBoxRenditionLists.Size = new System.Drawing.Size(1574, 21);
+            this.comboBoxRenditionLists.Size = new System.Drawing.Size(3128, 33);
             this.comboBoxRenditionLists.TabIndex = 3;
             this.comboBoxRenditionLists.TextChanged += new System.EventHandler(this.ComboBoxRenditionLists_TextChanged);
             // 
@@ -139,24 +140,24 @@
             this.tableLayoutPanel2.Controls.Add(this.textBoxRenditionStream, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 429);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2, 3, 0, 3);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(4, 806);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4, 6, 0, 6);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1582, 603);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(3144, 1118);
             this.tableLayoutPanel2.TabIndex = 5;
             // 
             // textBoxRenditionStream
             // 
             this.textBoxRenditionStream.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxRenditionStream.Location = new System.Drawing.Point(3, 3);
-            this.textBoxRenditionStream.Margin = new System.Windows.Forms.Padding(3, 3, 1, 3);
+            this.textBoxRenditionStream.Location = new System.Drawing.Point(6, 6);
+            this.textBoxRenditionStream.Margin = new System.Windows.Forms.Padding(6, 6, 2, 6);
             this.textBoxRenditionStream.Multiline = true;
             this.textBoxRenditionStream.Name = "textBoxRenditionStream";
             this.textBoxRenditionStream.ReadOnly = true;
             this.textBoxRenditionStream.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxRenditionStream.Size = new System.Drawing.Size(945, 597);
+            this.textBoxRenditionStream.Size = new System.Drawing.Size(1878, 1106);
             this.textBoxRenditionStream.TabIndex = 0;
             // 
             // tableLayoutPanel3
@@ -166,22 +167,24 @@
             this.tableLayoutPanel3.Controls.Add(this.groupBoxPreview, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.groupBoxSettings, 0, 1);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(950, 0);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(1, 0, 0, 1);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(1888, 0);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(2, 0, 0, 2);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 55F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(632, 602);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1256, 1116);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
             // groupBoxPreview
             // 
             this.groupBoxPreview.Controls.Add(this.tableLayoutPanel4);
             this.groupBoxPreview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxPreview.Location = new System.Drawing.Point(3, 3);
+            this.groupBoxPreview.Location = new System.Drawing.Point(6, 6);
+            this.groupBoxPreview.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.groupBoxPreview.Name = "groupBoxPreview";
-            this.groupBoxPreview.Size = new System.Drawing.Size(626, 264);
+            this.groupBoxPreview.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groupBoxPreview.Size = new System.Drawing.Size(1244, 490);
             this.groupBoxPreview.TabIndex = 1;
             this.groupBoxPreview.TabStop = false;
             this.groupBoxPreview.Text = "Preview";
@@ -194,12 +197,13 @@
             this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel5, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanelPlayer, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(6, 30);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 245F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(620, 245);
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 450F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1232, 454);
             this.tableLayoutPanel4.TabIndex = 0;
             // 
             // tableLayoutPanel5
@@ -209,24 +213,24 @@
             this.tableLayoutPanel5.Controls.Add(this.buttonVlcPlay, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.buttonVlcStop, 0, 1);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(435, 0);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(1, 0, 0, 1);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(864, 0);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(2, 0, 0, 2);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 4;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 58F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 58F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(185, 244);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(368, 452);
             this.tableLayoutPanel5.TabIndex = 1;
             // 
             // buttonVlcPlay
             // 
             this.buttonVlcPlay.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonVlcPlay.Location = new System.Drawing.Point(3, 0);
-            this.buttonVlcPlay.Margin = new System.Windows.Forms.Padding(3, 0, 2, 3);
+            this.buttonVlcPlay.Location = new System.Drawing.Point(6, 0);
+            this.buttonVlcPlay.Margin = new System.Windows.Forms.Padding(6, 0, 4, 6);
             this.buttonVlcPlay.Name = "buttonVlcPlay";
-            this.buttonVlcPlay.Size = new System.Drawing.Size(180, 27);
+            this.buttonVlcPlay.Size = new System.Drawing.Size(358, 52);
             this.buttonVlcPlay.TabIndex = 0;
             this.buttonVlcPlay.Text = "Play";
             this.buttonVlcPlay.UseVisualStyleBackColor = true;
@@ -235,10 +239,10 @@
             // buttonVlcStop
             // 
             this.buttonVlcStop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonVlcStop.Location = new System.Drawing.Point(3, 33);
-            this.buttonVlcStop.Margin = new System.Windows.Forms.Padding(3, 3, 2, 3);
+            this.buttonVlcStop.Location = new System.Drawing.Point(6, 64);
+            this.buttonVlcStop.Margin = new System.Windows.Forms.Padding(6, 6, 4, 6);
             this.buttonVlcStop.Name = "buttonVlcStop";
-            this.buttonVlcStop.Size = new System.Drawing.Size(180, 24);
+            this.buttonVlcStop.Size = new System.Drawing.Size(358, 46);
             this.buttonVlcStop.TabIndex = 1;
             this.buttonVlcStop.Text = "Stop";
             this.buttonVlcStop.UseVisualStyleBackColor = true;
@@ -248,35 +252,38 @@
             // 
             this.tableLayoutPanelPlayer.ColumnCount = 1;
             this.tableLayoutPanelPlayer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelPlayer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanelPlayer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanelPlayer.Controls.Add(this.axWindowsMediaPlayer1, 0, 0);
             this.tableLayoutPanelPlayer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelPlayer.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanelPlayer.Location = new System.Drawing.Point(6, 6);
+            this.tableLayoutPanelPlayer.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tableLayoutPanelPlayer.Name = "tableLayoutPanelPlayer";
             this.tableLayoutPanelPlayer.RowCount = 1;
             this.tableLayoutPanelPlayer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelPlayer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 239F));
-            this.tableLayoutPanelPlayer.Size = new System.Drawing.Size(428, 239);
+            this.tableLayoutPanelPlayer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 438F));
+            this.tableLayoutPanelPlayer.Size = new System.Drawing.Size(850, 442);
             this.tableLayoutPanelPlayer.TabIndex = 2;
             // 
             // axWindowsMediaPlayer1
             // 
             this.axWindowsMediaPlayer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.axWindowsMediaPlayer1.Enabled = true;
-            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(3, 3);
+            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(6, 6);
+            this.axWindowsMediaPlayer1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
             this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
-            this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(422, 233);
+            this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(838, 430);
             this.axWindowsMediaPlayer1.TabIndex = 2;
             // 
             // groupBoxSettings
             // 
             this.groupBoxSettings.Controls.Add(this.tableLayoutPanel6);
             this.groupBoxSettings.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxSettings.Location = new System.Drawing.Point(3, 273);
-            this.groupBoxSettings.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
+            this.groupBoxSettings.Location = new System.Drawing.Point(6, 508);
+            this.groupBoxSettings.Margin = new System.Windows.Forms.Padding(6, 6, 6, 2);
             this.groupBoxSettings.Name = "groupBoxSettings";
-            this.groupBoxSettings.Size = new System.Drawing.Size(626, 328);
+            this.groupBoxSettings.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groupBoxSettings.Size = new System.Drawing.Size(1244, 606);
             this.groupBoxSettings.TabIndex = 2;
             this.groupBoxSettings.TabStop = false;
             this.groupBoxSettings.Text = "Settings";
@@ -294,28 +301,29 @@
             this.tableLayoutPanel6.Controls.Add(this.buttonUpload, 0, 5);
             this.tableLayoutPanel6.Controls.Add(this.buttonSave, 0, 6);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(6, 30);
+            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 7;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(620, 309);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(1232, 570);
             this.tableLayoutPanel6.TabIndex = 0;
             // 
             // textBoxFirstSegment
             // 
             this.tableLayoutPanel6.SetColumnSpan(this.textBoxFirstSegment, 2);
             this.textBoxFirstSegment.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxFirstSegment.Location = new System.Drawing.Point(3, 3);
-            this.textBoxFirstSegment.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
+            this.textBoxFirstSegment.Location = new System.Drawing.Point(6, 6);
+            this.textBoxFirstSegment.Margin = new System.Windows.Forms.Padding(6, 6, 6, 2);
             this.textBoxFirstSegment.Name = "textBoxFirstSegment";
             this.textBoxFirstSegment.ReadOnly = true;
-            this.textBoxFirstSegment.Size = new System.Drawing.Size(614, 20);
+            this.textBoxFirstSegment.Size = new System.Drawing.Size(1220, 31);
             this.textBoxFirstSegment.TabIndex = 0;
             this.textBoxFirstSegment.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -323,11 +331,11 @@
             // 
             this.tableLayoutPanel6.SetColumnSpan(this.textBoxLastSegment, 2);
             this.textBoxLastSegment.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxLastSegment.Location = new System.Drawing.Point(3, 53);
-            this.textBoxLastSegment.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
+            this.textBoxLastSegment.Location = new System.Drawing.Point(6, 102);
+            this.textBoxLastSegment.Margin = new System.Windows.Forms.Padding(6, 6, 6, 2);
             this.textBoxLastSegment.Name = "textBoxLastSegment";
             this.textBoxLastSegment.ReadOnly = true;
-            this.textBoxLastSegment.Size = new System.Drawing.Size(614, 20);
+            this.textBoxLastSegment.Size = new System.Drawing.Size(1220, 31);
             this.textBoxLastSegment.TabIndex = 1;
             this.textBoxLastSegment.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -335,10 +343,10 @@
             // 
             this.tableLayoutPanel6.SetColumnSpan(this.buttonSetAsFirst, 2);
             this.buttonSetAsFirst.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonSetAsFirst.Location = new System.Drawing.Point(3, 25);
-            this.buttonSetAsFirst.Margin = new System.Windows.Forms.Padding(3, 0, 3, 2);
+            this.buttonSetAsFirst.Location = new System.Drawing.Point(6, 48);
+            this.buttonSetAsFirst.Margin = new System.Windows.Forms.Padding(6, 0, 6, 4);
             this.buttonSetAsFirst.Name = "buttonSetAsFirst";
-            this.buttonSetAsFirst.Size = new System.Drawing.Size(614, 23);
+            this.buttonSetAsFirst.Size = new System.Drawing.Size(1220, 44);
             this.buttonSetAsFirst.TabIndex = 2;
             this.buttonSetAsFirst.Text = "Set as first segment";
             this.buttonSetAsFirst.UseVisualStyleBackColor = true;
@@ -348,10 +356,10 @@
             // 
             this.tableLayoutPanel6.SetColumnSpan(this.buttonSetAsLast, 2);
             this.buttonSetAsLast.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonSetAsLast.Location = new System.Drawing.Point(3, 75);
-            this.buttonSetAsLast.Margin = new System.Windows.Forms.Padding(3, 0, 3, 2);
+            this.buttonSetAsLast.Location = new System.Drawing.Point(6, 144);
+            this.buttonSetAsLast.Margin = new System.Windows.Forms.Padding(6, 0, 6, 4);
             this.buttonSetAsLast.Name = "buttonSetAsLast";
-            this.buttonSetAsLast.Size = new System.Drawing.Size(614, 23);
+            this.buttonSetAsLast.Size = new System.Drawing.Size(1220, 44);
             this.buttonSetAsLast.TabIndex = 3;
             this.buttonSetAsLast.Text = "Set as last segment";
             this.buttonSetAsLast.UseVisualStyleBackColor = true;
@@ -361,10 +369,11 @@
             // 
             this.buttonReset.BackColor = System.Drawing.Color.IndianRed;
             this.buttonReset.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonReset.Location = new System.Drawing.Point(437, 108);
+            this.buttonReset.Location = new System.Drawing.Point(868, 208);
+            this.buttonReset.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.buttonReset.Name = "buttonReset";
             this.tableLayoutPanel6.SetRowSpan(this.buttonReset, 2);
-            this.buttonReset.Size = new System.Drawing.Size(180, 198);
+            this.buttonReset.Size = new System.Drawing.Size(358, 356);
             this.buttonReset.TabIndex = 4;
             this.buttonReset.Text = "Reset";
             this.buttonReset.UseVisualStyleBackColor = false;
@@ -374,9 +383,10 @@
             // 
             this.buttonUpload.BackColor = System.Drawing.Color.SteelBlue;
             this.buttonUpload.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonUpload.Location = new System.Drawing.Point(3, 108);
+            this.buttonUpload.Location = new System.Drawing.Point(6, 208);
+            this.buttonUpload.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.buttonUpload.Name = "buttonUpload";
-            this.buttonUpload.Size = new System.Drawing.Size(428, 96);
+            this.buttonUpload.Size = new System.Drawing.Size(850, 172);
             this.buttonUpload.TabIndex = 5;
             this.buttonUpload.Text = "Upload to Akamai";
             this.buttonUpload.UseVisualStyleBackColor = false;
@@ -387,9 +397,10 @@
             this.buttonSave.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.buttonSave.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonSave.Enabled = false;
-            this.buttonSave.Location = new System.Drawing.Point(3, 210);
+            this.buttonSave.Location = new System.Drawing.Point(6, 392);
+            this.buttonSave.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(428, 96);
+            this.buttonSave.Size = new System.Drawing.Size(850, 172);
             this.buttonSave.TabIndex = 6;
             this.buttonSave.Text = "Save playlists";
             this.buttonSave.UseVisualStyleBackColor = false;
@@ -398,31 +409,33 @@
             // 
             this.textBoxMasterStream.AcceptsReturn = true;
             this.textBoxMasterStream.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxMasterStream.Location = new System.Drawing.Point(5, 77);
-            this.textBoxMasterStream.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.textBoxMasterStream.Location = new System.Drawing.Point(10, 149);
+            this.textBoxMasterStream.Margin = new System.Windows.Forms.Padding(10, 6, 10, 6);
             this.textBoxMasterStream.Multiline = true;
             this.textBoxMasterStream.Name = "textBoxMasterStream";
             this.textBoxMasterStream.ReadOnly = true;
             this.textBoxMasterStream.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxMasterStream.Size = new System.Drawing.Size(1574, 294);
+            this.textBoxMasterStream.Size = new System.Drawing.Size(3128, 545);
             this.textBoxMasterStream.TabIndex = 6;
             // 
             // comboBoxSegmentList
             // 
             this.comboBoxSegmentList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.comboBoxSegmentList.FormattingEnabled = true;
-            this.comboBoxSegmentList.Location = new System.Drawing.Point(5, 404);
-            this.comboBoxSegmentList.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.comboBoxSegmentList.Location = new System.Drawing.Point(10, 758);
+            this.comboBoxSegmentList.Margin = new System.Windows.Forms.Padding(10, 6, 10, 6);
             this.comboBoxSegmentList.Name = "comboBoxSegmentList";
-            this.comboBoxSegmentList.Size = new System.Drawing.Size(1574, 21);
+            this.comboBoxSegmentList.Size = new System.Drawing.Size(3128, 33);
             this.comboBoxSegmentList.TabIndex = 7;
             this.comboBoxSegmentList.TextChanged += new System.EventHandler(this.ComboBoxSegmentList_TextChanged);
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 1039);
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 1957);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1584, 22);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 28, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(3148, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 8;
             this.statusStrip1.Text = "statusStrip1";
@@ -430,13 +443,14 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1584, 1061);
+            this.ClientSize = new System.Drawing.Size(3148, 1979);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(1600, 1100);
-            this.MinimumSize = new System.Drawing.Size(1600, 1100);
+            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.MaximumSize = new System.Drawing.Size(3174, 2050);
+            this.MinimumSize = new System.Drawing.Size(3174, 2050);
             this.Name = "Form1";
             this.Text = "Stream Trim Tool";
             this.tableLayoutPanel1.ResumeLayout(false);

@@ -13,6 +13,9 @@ using System.Reflection;
 using System.Net.Http;
 using System.IO;
 
+using System.Net;
+using System.Threading;
+
 
 
 
@@ -23,6 +26,7 @@ namespace StreamTrimTool
         MasterManifest masterManifestList = new MasterManifest();
 
         string vlcPlaylistEntry;
+        string initUrl;
         int selectedFirstSegmentIndex;
         int selectedLastSegmentIndex;
 
@@ -38,6 +42,15 @@ namespace StreamTrimTool
             axWindowsMediaPlayer1.settings.volume = 100;
 
             ShowStreamMessageBox();
+
+            // WEB SERVER
+
+            // Define the URL for your endpoint
+            string url = "http://localhost:8080/";
+
+            // Start the web server
+            StartWebServer(url);
+            Console.WriteLine("Server started. Listening for requests at: " + url);
 
         }
 
@@ -222,7 +235,7 @@ namespace StreamTrimTool
                             {
                                 segmentTimeStamp = segmentUrl;
                             }
-                            else if (segmentUrl.Contains(".ts"))
+                            else if (segmentUrl.Contains(".ts") || segmentUrl.Contains(".mp4"))
                             {
                                 Segment segmentToAdd = new Segment
                                 {
@@ -294,11 +307,6 @@ namespace StreamTrimTool
                         string[] splittedResult = result.Split('\n');
 
                         newAudioManifest.HttpGetResult = splittedResult;
-
-
-
-
-
 
                         string segmentDuartion = "";
                         string segmentTimeStamp = "";
@@ -437,7 +445,7 @@ namespace StreamTrimTool
                             {
                                 segmentTimeStamp = segmentUrl;
                             }
-                            else if (segmentUrl.Contains(".ts"))
+                            else if (segmentUrl.Contains(".ts") || segmentUrl.Contains(".mp4"))
                             {
                                 Segment segmentToAdd = new Segment
                                 {
@@ -622,9 +630,31 @@ namespace StreamTrimTool
                     {
                         ShowStreamMessageBox();
                     }
-                    Console.WriteLine("Playing Source: " + vlcPlaylistEntry);
-                    axWindowsMediaPlayer1.URL = vlcPlaylistEntry;
-                    axWindowsMediaPlayer1.Ctlcontrols.play();
+
+                    if (vlcPlaylistEntry.Contains(".mp4"))
+                    {
+                        // EXTRACT INIT CHUNK URL
+                        string[] segmentUrlSplit = vlcPlaylistEntry.Split('/');
+                        Console.WriteLine(segmentUrlSplit[0]);
+                        initUrl = segmentUrlSplit[0] + "/" +
+                                            segmentUrlSplit[1] + "/" +
+                                            segmentUrlSplit[2] + "/" +
+                                            segmentUrlSplit[3] + "/" +
+                                            segmentUrlSplit[4] + "/" +
+                                            segmentUrlSplit[5] + "/" +
+                                            segmentUrlSplit[6] + "/" +
+                                            segmentUrlSplit[8] + "init.mp4";
+                        Console.WriteLine("Playing Source: " + vlcPlaylistEntry);
+                        axWindowsMediaPlayer1.URL = "http://localhost:8080/"; 
+                        //axWindowsMediaPlayer1.URL = "http://localhost:5050/segment/40";
+                        axWindowsMediaPlayer1.Ctlcontrols.play();
+
+
+                    } else {
+                        Console.WriteLine("Playing Source: " + vlcPlaylistEntry);
+                        axWindowsMediaPlayer1.URL = vlcPlaylistEntry;
+                        axWindowsMediaPlayer1.Ctlcontrols.play();
+                    }
                 }
                 else
                 {
@@ -908,5 +938,139 @@ namespace StreamTrimTool
             MessageBox.Show("Use Player just for Segment Preview. \nIf you play a .m3u8 the stream will be displayed choppy.", "Stream Preview", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
 
+        private void StartWebServer(string url)
+        {
+            // Create a new HttpListener instance
+            HttpListener listener = new HttpListener();
+
+            // Add the URL(s) you want to listen to
+            listener.Prefixes.Add(url);
+
+            // Start listening for incoming requests
+            listener.Start();
+
+            // Handle incoming requests asynchronously
+            ThreadPool.QueueUserWorkItem((o) =>
+            {
+                while (listener.IsListening)
+                {
+                    // Wait for an incoming request
+                    HttpListenerContext context = listener.GetContext();
+
+                    // Handle the request in a separate thread
+                    ThreadPool.QueueUserWorkItem((c) =>
+                    {
+                        try
+                        {
+                            // Get the response object
+                            HttpListenerResponse response = context.Response;
+                            response.ContentType = "video/mp4";
+
+                            // Create a memory stream to store the response content
+                            using (MemoryStream memoryStream = new MemoryStream())
+                            {
+                                // Loop through each content URL
+                                string[] contentUrls = { initUrl, vlcPlaylistEntry };
+
+                                foreach (string contentUrl in contentUrls)
+                                {
+                                    // Create a WebRequest to fetch content from the current URL
+                                    WebRequest webRequest = WebRequest.Create(contentUrl);
+
+                                    // Get the response from the WebRequest
+                                    using (WebResponse webResponse = webRequest.GetResponse())
+                                    using (Stream contentStream = webResponse.GetResponseStream())
+                                    {
+                                        // Copy the content from the web response stream to the memory stream
+                                        contentStream.CopyTo(memoryStream);
+                                    }
+                                }
+
+                                response.ContentLength64 = memoryStream.Length;
+                                // Write the content from the memory stream to the response output stream
+                                memoryStream.Position = 0;
+                                memoryStream.CopyTo(response.OutputStream);
+                            }
+
+                            // Close the output stream
+                            response.OutputStream.Close();
+                        }
+                        catch (Exception ex)
+                        {
+                            // Handle any exceptions
+                            Console.WriteLine("Error handling request: " + ex.Message);
+                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        }
+                        finally
+                        {
+                            // Close the response
+                            context.Response.Close();
+                        }
+                    }, null);
+                }
+            });
+        }
+
+        /*private void StartWebServer(string url)
+        {
+            // Create a new HttpListener instance
+            HttpListener listener = new HttpListener();
+            listener.Prefixes.Add(url);
+            listener.Start();
+
+            // Handle incoming requests asynchronously
+            ThreadPool.QueueUserWorkItem((o) =>
+            {
+                while (listener.IsListening)
+                {
+                    // Wait for an incoming request
+                    HttpListenerContext context = listener.GetContext();
+                    ThreadPool.QueueUserWorkItem((c) =>
+                    {
+                       
+
+                        try
+                        {
+                            // Get the response object
+                            HttpListenerResponse response = context.Response;
+
+                            // Loop through each content URL
+                            string[] contentUrls = { initUrl, vlcPlaylistEntry };
+                            foreach (string contentUrl in contentUrls)
+                            {
+                                // Create a WebRequest to fetch content from the current URL
+                                WebRequest webRequest = WebRequest.Create(contentUrl);
+
+                                // Get the response from the WebRequest
+                                using (WebResponse webResponse = webRequest.GetResponse())
+                                using (Stream contentStream = webResponse.GetResponseStream())
+                                {
+                                    // Copy the content from the web response stream to the response output stream
+                                    contentStream.CopyTo(response.OutputStream);
+                                }
+                            }
+
+                            // Close the output stream
+                            response.OutputStream.Close();
+                        }
+                        catch (Exception ex)
+                        {
+                            // Handle any exceptions
+                            Console.WriteLine("Error handling request: " + ex.Message);
+                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        }
+                        finally
+                        {
+                            // Close the response
+                            context.Response.Close();
+                        }
+
+                    }, null);
+                }
+            });
+        } */
+
     }
+
 }
+
