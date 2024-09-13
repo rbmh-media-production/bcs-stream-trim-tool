@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Media;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 using System.Net.Http;
 using System.IO;
@@ -382,15 +383,40 @@ namespace StreamTrimTool
                     }
                     else if (renditionListLine.Contains(".m3u8"))
                     {
+
+                        // pull URL from line, behind URI Parameter >> " URI=... "
+                        // Perform the regex match
+
+                        String line = renditionListLine;
+
+                        //////////////////////
+
+                        if (line.Contains("#EXT-X-I-FRAME-STREAM-INF") || line.Contains("#EXT-X-IMAGE-STREAM-INF"))
+                        {
+                            Match match = Regex.Match(line, @"URI=""([^""]+)""");
+
+                            if (match.Success)
+                            {
+                                line = match.Groups[1].Value;
+                      
+                            }
+                            else
+                            {
+                                Console.WriteLine("URI not found");
+                            }
+                        }
+
+                        //////////////////////
+
                         newRenditionManifest.SegmentList = new List<Segment>();
 
-                        if (renditionListLine.Contains("https://"))
+                        if (line.Contains("https://"))
                         {
-                            newRenditionManifest.PlaybackUrl = renditionListLine;
+                            newRenditionManifest.PlaybackUrl = line;
                         }
                         else
                         {
-                            newRenditionManifest.PlaybackUrl = masterManifest.BasePlaybackUrl + renditionListLine;
+                            newRenditionManifest.PlaybackUrl = masterManifest.BasePlaybackUrl + line;
                         }
 
                         string[] splittedPlaybackUrl = newRenditionManifest.PlaybackUrl.Split('/');
@@ -414,12 +440,17 @@ namespace StreamTrimTool
 
                         string segmentDuartion = "";
                         string segmentTimeStamp = "";
+                        string segmentByteRange = "";
 
                         Dictionary<string, string> newRenditionSettings = new Dictionary<string, string>();
 
                         foreach (string segmentUrl in splittedResult)
                         {
-                            if ((segmentUrl.Contains("#EXT-X-") || segmentUrl.Contains("#EXTM3U")) && !segmentUrl.Contains("#EXT-X-PROGRAM-DATE-TIME") && !segmentUrl.Contains("#EXT-X-DISCONTINUITY"))
+                            if (segmentUrl.Contains("#EXT-X-BYTERANGE"))
+                            {
+                                segmentByteRange = segmentUrl;
+                            }
+                            else if ((segmentUrl.Contains("#EXT-X-") || segmentUrl.Contains("#EXTM3U")) && !segmentUrl.Contains("#EXT-X-PROGRAM-DATE-TIME") && !segmentUrl.Contains("#EXT-X-DISCONTINUITY"))
                             {
                                 string key = "";
                                 string value = "";
