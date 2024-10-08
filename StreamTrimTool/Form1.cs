@@ -390,9 +390,10 @@ namespace StreamTrimTool
                         String line = renditionListLine;
 
                         //////////////////////
-
+                        Boolean hideUrl = false;
                         if (line.Contains("#EXT-X-I-FRAME-STREAM-INF") || line.Contains("#EXT-X-IMAGE-STREAM-INF"))
                         {
+                            hideUrl = true;
                             Match match = Regex.Match(line, @"URI=""([^""]+)""");
 
                             if (match.Success)
@@ -405,6 +406,7 @@ namespace StreamTrimTool
                                 Console.WriteLine("URI not found");
                             }
                         }
+
 
                         //////////////////////
 
@@ -438,19 +440,60 @@ namespace StreamTrimTool
 
                         newRenditionManifest.HttpGetResult = splittedResult;
 
-                        string segmentDuartion = "";
+                        string segmentDuration = "";
                         string segmentTimeStamp = "";
                         string segmentByteRange = "";
+
+                        /*
+ 
+                        #EXTM3U
+                        #EXT-X-ALLOW-CACHE:NO
+                        #EXT-X-VERSION:4
+                        #EXT-X-TARGETDURATION:6
+                        #EXT-X-MEDIA-SEQUENCE:1
+                        #EXT-X-PLAYLIST-TYPE:VOD
+
+                        #EXT-X-PROGRAM-DATE-TIME:2024-10-07T08:03:00.633Z
+                        #EXTINF:6.00000,
+                        URL
+
+                        ___________
+
+                        #EXTM3U
+                        #EXT-X-VERSION:4
+                        #EXT-X-TARGETDURATION:6
+                        #EXT-X-MEDIA-SEQUENCE:1
+                        #EXT-X-PLAYLIST-TYPE:VOD
+                        #EXT-X-I-FRAMES-ONLY
+
+                        #EXTINF:3.000000,
+                        #EXT-X-BYTERANGE:20868@376
+                        URL 
+
+                        ___________
+
+                        #EXTM3U
+                        #EXT-X-ALLOW-CACHE:NO
+                        #EXT-X-VERSION:4
+                        #EXT-X-TARGETDURATION:6
+                        #EXT-X-MEDIA-SEQUENCE:1
+                        #EXT-X-IMAGES-ONLY
+                        #EXT-X-PLAYLIST-TYPE:VOD
+
+                        #EXT-X-PROGRAM-DATE-TIME:2024-10-07T08:03:00.633Z
+                        #EXTINF:6.00000,
+                        URL
+
+                        */
+
 
                         Dictionary<string, string> newRenditionSettings = new Dictionary<string, string>();
 
                         foreach (string segmentUrl in splittedResult)
                         {
-                            if (segmentUrl.Contains("#EXT-X-BYTERANGE"))
-                            {
-                                segmentByteRange = segmentUrl;
-                            }
-                            else if ((segmentUrl.Contains("#EXT-X-") || segmentUrl.Contains("#EXTM3U")) && !segmentUrl.Contains("#EXT-X-PROGRAM-DATE-TIME") && !segmentUrl.Contains("#EXT-X-DISCONTINUITY"))
+
+
+                            if ((segmentUrl.Contains("#EXT-X-") || segmentUrl.Contains("#EXTM3U")) && !segmentUrl.Contains("#EXT-X-PROGRAM-DATE-TIME") && !segmentUrl.Contains("#EXT-X-DISCONTINUITY") && !segmentUrl.Contains("#EXT-X-BYTERANGE"))
                             {
                                 string key = "";
                                 string value = "";
@@ -470,19 +513,29 @@ namespace StreamTrimTool
                             }
                             else if (segmentUrl.Contains("#EXTINF"))
                             {
-                                segmentDuartion = segmentUrl;
+                                segmentDuration = segmentUrl;
                             }
                             else if (segmentUrl.Contains("#EXT-X-PROGRAM-DATE-TIME"))
                             {
                                 segmentTimeStamp = segmentUrl;
                             }
-                            else if (segmentUrl.Contains(".ts") || segmentUrl.Contains(".mp4"))
+                            else if (segmentUrl.Contains("#EXT-X-BYTERANGE"))
+                            {
+                                segmentByteRange = segmentUrl;
+                            }
+                            else if (segmentUrl.Contains(".ts") || segmentUrl.Contains(".mp4") || segmentUrl.Contains(".jpg"))
                             {
                                 Segment segmentToAdd = new Segment
                                 {
-                                    SegmentDuration = segmentDuartion,
-                                    SegmentTimestamp = segmentTimeStamp
+                                    SegmentDuration = segmentDuration,
+                                    SegmentTimestamp = segmentTimeStamp,
+                                    SegmentByterange = segmentByteRange
                                 };
+
+                                // RESET 
+                                segmentDuration = "";
+                                segmentTimeStamp = "";
+                                segmentByteRange = "";
 
                                 if (segmentUrl.Contains("https://"))
                                 {
@@ -509,7 +562,10 @@ namespace StreamTrimTool
 
                         renditionManifests.Add(newRenditionManifest);
 
-                        AddItemToComboBoxRenditionLists(newRenditionManifest.PlaybackUrl);
+                        if (!hideUrl)
+                        {
+                            AddItemToComboBoxRenditionLists(newRenditionManifest.PlaybackUrl);
+                        }
 
                     }
                 }
@@ -834,30 +890,126 @@ namespace StreamTrimTool
                     string uploadUrl = "";
                     string payload = "";
 
+                    /* NORMAL
+ 
+                    #EXTM3U
+                    #EXT-X-ALLOW-CACHE:NO
+                    #EXT-X-VERSION:4
+                    #EXT-X-TARGETDURATION:6
+                    #EXT-X-MEDIA-SEQUENCE:1
+                    #EXT-X-PLAYLIST-TYPE:VOD
+
+                    #EXT-X-PROGRAM-DATE-TIME:2024-10-07T08:03:00.633Z
+                    #EXTINF:6.00000,
+                    URL
+
+                    ___________ IFRAME
+
+                    #EXTM3U
+                    #EXT-X-VERSION:4
+                    #EXT-X-TARGETDURATION:6
+                    #EXT-X-MEDIA-SEQUENCE:1
+                    #EXT-X-PLAYLIST-TYPE:VOD
+                    #EXT-X-I-FRAMES-ONLY
+
+                    #EXTINF:3.000000,
+                    #EXT-X-BYTERANGE:20868@376
+                    URL 
+
+                    ___________ IMAGE
+
+                    #EXTM3U
+                    #EXT-X-ALLOW-CACHE:NO
+                    #EXT-X-VERSION:4
+                    #EXT-X-TARGETDURATION:6
+                    #EXT-X-MEDIA-SEQUENCE:1
+                    #EXT-X-IMAGES-ONLY
+                    #EXT-X-PLAYLIST-TYPE:VOD
+
+                    #EXT-X-PROGRAM-DATE-TIME:2024-10-07T08:03:00.633Z
+                    #EXTINF:6.00000,
+                    URL
+                                            
+                    */
+
                     foreach (RenditionManifest renditionList in masterManifestList.RenditionManifests)
                     {
-                        payload = renditionList.RenditionSettings["#EXTM3U"] + "\n";
-                        payload += "#EXT-X-ALLOW-CACHE:" + renditionList.RenditionSettings["#EXT-X-ALLOW-CACHE"] + "\n";
-                        payload += "#EXT-X-VERSION:" + renditionList.RenditionSettings["#EXT-X-VERSION"] + "\n";
-                        payload += "#EXT-X-TARGETDURATION:" + renditionList.RenditionSettings["#EXT-X-TARGETDURATION"] + "\n";
-                        payload += "#EXT-X-MEDIA-SEQUENCE:";
 
-                        int mediaSequence = Convert.ToInt32(renditionList.RenditionSettings["#EXT-X-MEDIA-SEQUENCE"]);
-                        mediaSequence += mediaSequence + selectedFirstSegmentIndex;
+                        Boolean isIframeList = false;
 
-                        payload += mediaSequence.ToString() + "\n";
-                        payload += "#EXT-X-PLAYLIST-TYPE:VOD" + "\n";
-
-                        for (int i = selectedFirstSegmentIndex; i <= selectedLastSegmentIndex; i++)
+                        // I FRAME LIST SETTINGS
+                        if (renditionList.RenditionSettings.ContainsKey("#EXT-X-I-FRAMES-ONLY"))
                         {
+                            isIframeList = true;
 
-                            if (renditionList.SegmentList[i].SegmentTimestamp != "")
+                            payload = renditionList.RenditionSettings["#EXTM3U"] + "\n";
+                            payload += "#EXT-X-VERSION:" + renditionList.RenditionSettings["#EXT-X-VERSION"] + "\n";
+                            payload += "#EXT-X-TARGETDURATION:" + renditionList.RenditionSettings["#EXT-X-TARGETDURATION"] + "\n";
+                            payload += "#EXT-X-MEDIA-SEQUENCE:1" + "\n";
+
+                           /* int mediaSequence = Convert.ToInt32(renditionList.RenditionSettings["#EXT-X-MEDIA-SEQUENCE"]);
+                            mediaSequence += mediaSequence + selectedFirstSegmentIndex;
+                            payload += mediaSequence.ToString() + "\n"; */
+
+                            payload += "#EXT-X-PLAYLIST-TYPE:VOD" + "\n";
+                            payload += "#EXT-X-I-FRAMES-ONLY" + "\n";
+                        }
+
+                        // IMAGE LIST SETTINGS
+                        else if (renditionList.RenditionSettings.ContainsKey("#EXT-X-IMAGES-ONLY"))
+                        {
+                            payload = renditionList.RenditionSettings["#EXTM3U"] + "\n";
+                            payload += "#EXT-X-ALLOW-CACHE:" + renditionList.RenditionSettings["#EXT-X-ALLOW-CACHE"] + "\n";
+                            payload += "#EXT-X-VERSION:" + renditionList.RenditionSettings["#EXT-X-VERSION"] + "\n";
+                            payload += "#EXT-X-TARGETDURATION:" + renditionList.RenditionSettings["#EXT-X-TARGETDURATION"] + "\n";
+                            payload += "#EXT-X-MEDIA-SEQUENCE:1" + "\n";
+
+                           /* int mediaSequence = Convert.ToInt32(renditionList.RenditionSettings["#EXT-X-MEDIA-SEQUENCE"]);
+                            mediaSequence += mediaSequence + selectedFirstSegmentIndex;
+                            payload += mediaSequence.ToString() + "\n"; */
+
+                            payload += "#EXT-X-IMAGES-ONLY" + "\n";
+                            payload += "#EXT-X-PLAYLIST-TYPE:VOD" + "\n";
+                        }
+
+                        // DEFAULT LIST SETTINGS
+                        else
+                        {
+                            payload = renditionList.RenditionSettings["#EXTM3U"] + "\n";
+                            payload += "#EXT-X-ALLOW-CACHE:" + renditionList.RenditionSettings["#EXT-X-ALLOW-CACHE"] + "\n";
+                            payload += "#EXT-X-VERSION:" + renditionList.RenditionSettings["#EXT-X-VERSION"] + "\n";
+                            payload += "#EXT-X-TARGETDURATION:" + renditionList.RenditionSettings["#EXT-X-TARGETDURATION"] + "\n";
+                            payload += "#EXT-X-MEDIA-SEQUENCE:1" + "\n";
+
+                            /*int mediaSequence = Convert.ToInt32(renditionList.RenditionSettings["#EXT-X-MEDIA-SEQUENCE"]);
+                            mediaSequence += mediaSequence + selectedFirstSegmentIndex;
+                            payload += mediaSequence.ToString() + "\n"; */
+
+                            payload += "#EXT-X-PLAYLIST-TYPE:VOD" + "\n";
+                        }
+
+                        // if isIframeList, double the selectedLastSegmentIndex
+
+                        if (isIframeList)
+                        {
+                            for (int i = selectedFirstSegmentIndex * 2; i <= (selectedLastSegmentIndex * 2) + 1; i++)
                             {
-                                payload += renditionList.SegmentList[i].SegmentTimestamp + "\n";
+                                payload += renditionList.SegmentList[i].SegmentDuration + "\n";
+                                payload += renditionList.SegmentList[i].SegmentByterange + "\n";
+                                payload += renditionList.SegmentList[i].SegmentAbsolutePath + "\n";
                             }
-
-                            payload += renditionList.SegmentList[i].SegmentDuration + "\n";
-                            payload += renditionList.SegmentList[i].SegmentAbsolutePath + "\n";
+                        }
+                        else
+                        {
+                            for (int i = selectedFirstSegmentIndex; i <= selectedLastSegmentIndex; i++)
+                            {
+                                if (renditionList.SegmentList[i].SegmentTimestamp != "")
+                                {
+                                    payload += renditionList.SegmentList[i].SegmentTimestamp + "\n";
+                                }
+                                payload += renditionList.SegmentList[i].SegmentDuration + "\n";
+                                payload += renditionList.SegmentList[i].SegmentAbsolutePath + "\n";
+                            }
                         }
 
                         payload += "#EXT-X-ENDLIST";
@@ -871,7 +1023,6 @@ namespace StreamTrimTool
                         {
                             uploadUrl = "https://" + renditionList.IngestUrl;
                         }
-
 
                         UploadList(uploadUrl, payload);
                     }
@@ -1104,4 +1255,6 @@ namespace StreamTrimTool
     }
 
 }
+
+
 

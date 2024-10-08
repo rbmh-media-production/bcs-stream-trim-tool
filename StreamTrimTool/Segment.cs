@@ -12,5 +12,6 @@ namespace StreamTrimTool
         public string SegmentRelativePath { get; set; }
         public string SegmentAbsolutePath { get; set; }
         public string SegmentTimestamp { get; set; }
+        public string SegmentByterange { get; set; }
     }
 }
