@@ -492,7 +492,6 @@ namespace StreamTrimTool
                         foreach (string segmentUrl in splittedResult)
                         {
 
-
                             if ((segmentUrl.Contains("#EXT-X-") || segmentUrl.Contains("#EXTM3U")) && !segmentUrl.Contains("#EXT-X-PROGRAM-DATE-TIME") && !segmentUrl.Contains("#EXT-X-DISCONTINUITY") && !segmentUrl.Contains("#EXT-X-BYTERANGE"))
                             {
                                 string key = "";
@@ -786,7 +785,13 @@ namespace StreamTrimTool
 
                 foreach (RenditionManifest item in masterManifestList.RenditionManifests)
                 {
-                    audioAndVideoManifests.Add((AudioManifest)item);
+
+                    if (item.RenditionSettings.ContainsKey("#EXT-X-I-FRAMES-ONLY") || item.RenditionSettings.ContainsKey("#EXT-X-IMAGES-ONLY"))
+                    {
+
+                    } else { 
+                        audioAndVideoManifests.Add((AudioManifest)item);
+                    }
 
                 }
 
@@ -817,7 +822,15 @@ namespace StreamTrimTool
 
                 foreach (RenditionManifest item in masterManifestList.RenditionManifests)
                 {
-                    audioAndVideoManifests.Add((AudioManifest)item);
+
+                    if (item.RenditionSettings.ContainsKey("#EXT-X-I-FRAMES-ONLY") || item.RenditionSettings.ContainsKey("#EXT-X-IMAGES-ONLY"))
+                    {
+
+                    }
+                    else
+                    {
+                        audioAndVideoManifests.Add((AudioManifest)item);
+                    }
 
                 }
 
@@ -881,7 +894,24 @@ namespace StreamTrimTool
             }
         }
 
-        private void ButtonUpload_Click(object sender, EventArgs e)
+private int GetMediaSequence(string segmentUrl)
+{
+    Regex regex = new Regex(@"master_.*_(\d+)\.[^\/]+$");
+
+    // Match the sequence number
+    Match match = regex.Match(segmentUrl);
+    if (match.Success)
+    {
+        // Return the extracted sequence number
+        return int.Parse(match.Groups[1].Value);
+    }
+    else
+    {
+        return 1;
+    }
+}
+
+private void ButtonUpload_Click(object sender, EventArgs e)
         {
             try
             {
@@ -945,11 +975,13 @@ namespace StreamTrimTool
                             payload = renditionList.RenditionSettings["#EXTM3U"] + "\n";
                             payload += "#EXT-X-VERSION:" + renditionList.RenditionSettings["#EXT-X-VERSION"] + "\n";
                             payload += "#EXT-X-TARGETDURATION:" + renditionList.RenditionSettings["#EXT-X-TARGETDURATION"] + "\n";
-                            payload += "#EXT-X-MEDIA-SEQUENCE:1" + "\n";
+                            payload += "#EXT-X-MEDIA-SEQUENCE:";
+                            int mediaSequence = GetMediaSequence(renditionList.SegmentList[selectedFirstSegmentIndex * 2].SegmentAbsolutePath);
+                            payload += mediaSequence.ToString() + "\n";
 
-                           /* int mediaSequence = Convert.ToInt32(renditionList.RenditionSettings["#EXT-X-MEDIA-SEQUENCE"]);
-                            mediaSequence += mediaSequence + selectedFirstSegmentIndex;
-                            payload += mediaSequence.ToString() + "\n"; */
+                            /* int mediaSequence = Convert.ToInt32(renditionList.RenditionSettings["#EXT-X-MEDIA-SEQUENCE"]);
+                             mediaSequence += mediaSequence + selectedFirstSegmentIndex;
+                             payload += mediaSequence.ToString() + "\n"; */
 
                             payload += "#EXT-X-PLAYLIST-TYPE:VOD" + "\n";
                             payload += "#EXT-X-I-FRAMES-ONLY" + "\n";
@@ -962,11 +994,13 @@ namespace StreamTrimTool
                             payload += "#EXT-X-ALLOW-CACHE:" + renditionList.RenditionSettings["#EXT-X-ALLOW-CACHE"] + "\n";
                             payload += "#EXT-X-VERSION:" + renditionList.RenditionSettings["#EXT-X-VERSION"] + "\n";
                             payload += "#EXT-X-TARGETDURATION:" + renditionList.RenditionSettings["#EXT-X-TARGETDURATION"] + "\n";
-                            payload += "#EXT-X-MEDIA-SEQUENCE:1" + "\n";
+                            payload += "#EXT-X-MEDIA-SEQUENCE:";
+                            int mediaSequence = GetMediaSequence(renditionList.SegmentList[selectedFirstSegmentIndex].SegmentAbsolutePath);
+                            payload += mediaSequence.ToString() + "\n";
 
-                           /* int mediaSequence = Convert.ToInt32(renditionList.RenditionSettings["#EXT-X-MEDIA-SEQUENCE"]);
-                            mediaSequence += mediaSequence + selectedFirstSegmentIndex;
-                            payload += mediaSequence.ToString() + "\n"; */
+                            /* int mediaSequence = Convert.ToInt32(renditionList.RenditionSettings["#EXT-X-MEDIA-SEQUENCE"]);
+                             mediaSequence += mediaSequence + selectedFirstSegmentIndex;
+                             payload += mediaSequence.ToString() + "\n"; */
 
                             payload += "#EXT-X-IMAGES-ONLY" + "\n";
                             payload += "#EXT-X-PLAYLIST-TYPE:VOD" + "\n";
@@ -979,7 +1013,9 @@ namespace StreamTrimTool
                             payload += "#EXT-X-ALLOW-CACHE:" + renditionList.RenditionSettings["#EXT-X-ALLOW-CACHE"] + "\n";
                             payload += "#EXT-X-VERSION:" + renditionList.RenditionSettings["#EXT-X-VERSION"] + "\n";
                             payload += "#EXT-X-TARGETDURATION:" + renditionList.RenditionSettings["#EXT-X-TARGETDURATION"] + "\n";
-                            payload += "#EXT-X-MEDIA-SEQUENCE:1" + "\n";
+                            payload += "#EXT-X-MEDIA-SEQUENCE:";
+                            int mediaSequence = GetMediaSequence(renditionList.SegmentList[selectedFirstSegmentIndex].SegmentAbsolutePath);
+                            payload += mediaSequence.ToString() + "\n";
 
                             /*int mediaSequence = Convert.ToInt32(renditionList.RenditionSettings["#EXT-X-MEDIA-SEQUENCE"]);
                             mediaSequence += mediaSequence + selectedFirstSegmentIndex;
@@ -1024,7 +1060,7 @@ namespace StreamTrimTool
                             uploadUrl = "https://" + renditionList.IngestUrl;
                         }
 
-                        UploadList(uploadUrl, payload);
+                       UploadList(uploadUrl, payload);
                     }
 
 
