@@ -16,6 +16,7 @@ using System.IO;
 
 using System.Net;
 using System.Threading;
+using System.Security.Policy;
 
 
 
@@ -658,6 +659,8 @@ namespace StreamTrimTool
                 textBoxFirstSegment.Text = "";
                 textBoxLastSegment.Text = "";
 
+                textBoxCustomClipName.Text = "";
+
                 selectedFirstSegmentIndex = -1;
                 selectedLastSegmentIndex = -1;
 
@@ -913,6 +916,59 @@ private int GetMediaSequence(string segmentUrl)
 
 private void ButtonUpload_Click(object sender, EventArgs e)
         {
+
+            // CHECK CUSTOM CLIP NAME
+            string customClipName = "";
+            bool hasValidCustomName = false;
+
+            try
+            {
+                customClipName = textBoxCustomClipName.Text;
+
+                if (string.IsNullOrEmpty(customClipName))
+                {
+                    hasValidCustomName = false;
+                }
+                else
+                {
+                    hasValidCustomName = true;
+                }
+
+            } 
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            // MODIFY MASTER MANIFEST IF CUSTOM CLIP NAME IS PRESENT
+            // AND UPLOAD THE NEW MANIFEST USING A MODIFIED INGEST URL
+            if (hasValidCustomName)
+            {
+                string[] modifiedMasterManifest = Array.Empty<string>();
+                string modifiedMasterIngestURL;
+                string payload;
+                // Create new mastermanifest with modified rendition urls
+                for (int i = 0; i < masterManifestList.HttpGetResult.Length; i++)
+                {
+                    modifiedMasterManifest = masterManifestList.HttpGetResult
+                      .Select(url => ModifyUrl(url, customClipName))
+                      .ToArray();
+                }
+                
+                payload = string.Join(Environment.NewLine, modifiedMasterManifest);
+
+                // Create new master ingest url
+                modifiedMasterIngestURL = ModifyUrl(masterManifestList.IngestUrl, customClipName);
+
+                if (!modifiedMasterIngestURL.StartsWith("http://", StringComparison.OrdinalIgnoreCase) &&
+                    !modifiedMasterIngestURL.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                {
+                    modifiedMasterIngestURL = "https://" + modifiedMasterIngestURL;
+                }
+
+                UploadList(modifiedMasterIngestURL, payload);
+            }
+
             try
             {
                 if (selectedFirstSegmentIndex != -1 && selectedFirstSegmentIndex != -1 && selectedFirstSegmentIndex < selectedLastSegmentIndex)
@@ -1060,7 +1116,13 @@ private void ButtonUpload_Click(object sender, EventArgs e)
                             uploadUrl = "https://" + renditionList.IngestUrl;
                         }
 
-                       UploadList(uploadUrl, payload);
+                        if (hasValidCustomName)
+                        {
+                            uploadUrl = ModifyUrl(uploadUrl, customClipName);
+                        }
+                        // IF CUSTOM NAME IS PROVIDED, THE uploadURL needs to be adapted before here. Payload itself can stay the same
+                        UploadList(uploadUrl, payload);
+                        //MessageBox.Show("Uploading...");
                     }
 
 
@@ -1102,9 +1164,15 @@ private void ButtonUpload_Click(object sender, EventArgs e)
                             uploadUrl = "https://" + audioRenditionList.IngestUrl;
                         }
 
-
+                        if (hasValidCustomName)
+                        {
+                            uploadUrl = ModifyUrl(uploadUrl, customClipName);
+                        }
                         UploadList(uploadUrl, payload);
                     }
+
+                    
+
                 }
                 else
                 {
@@ -1227,6 +1295,32 @@ private void ButtonUpload_Click(object sender, EventArgs e)
                     }, null);
                 }
             });
+        }
+
+        private void textBoxCustomClipName_TextChanged(object sender, EventArgs e)
+        {
+            // Filter the input to allow only alphanumeric characters, underscores, and hyphens
+            textBoxCustomClipName.Text = new string(textBoxCustomClipName.Text
+                .Where(c => char.IsLetterOrDigit(c) || c == '_' || c == '-')
+                .ToArray());
+
+            // Place the caret at the end of the text to ensure smooth user experience
+            textBoxCustomClipName.SelectionStart = textBoxCustomClipName.Text.Length;
+        }
+
+        static string ModifyUrl(string url, string prefix)
+        {
+            if (url.EndsWith(".m3u8"))
+            {
+                int lastSlashIndex = url.LastIndexOf('/');
+                if (lastSlashIndex != -1)
+                {
+                    string path = url.Substring(0, lastSlashIndex + 1); // Keep the path up to the last slash
+                    string fileName = url.Substring(lastSlashIndex + 1); // Get the file name
+                    return $"{path}{prefix}_{fileName}"; // Add the prefix to the file name
+                }
+            }
+            return url; // Return the original string if it's not a valid URL or doesn't end with .m3u8
         }
 
         /*private void StartWebServer(string url)

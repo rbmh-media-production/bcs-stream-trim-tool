@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Red Bull")]
 [assembly: AssemblyProduct("StreamTrimTool")]
-[assembly: AssemblyCopyright("Copyright © Red Bull 2018")]
+[assembly: AssemblyCopyright("Copyright © Red Bull 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
