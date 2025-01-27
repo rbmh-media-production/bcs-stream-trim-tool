@@ -948,12 +948,12 @@ private void ButtonUpload_Click(object sender, EventArgs e)
                 string modifiedMasterIngestURL;
                 string payload;
                 // Create new mastermanifest with modified rendition urls
-                for (int i = 0; i < masterManifestList.HttpGetResult.Length; i++)
-                {
+              //  for (int i = 0; i < masterManifestList.HttpGetResult.Length; i++)
+                //{
                     modifiedMasterManifest = masterManifestList.HttpGetResult
                       .Select(url => ModifyUrl(url, customClipName))
                       .ToArray();
-                }
+             //   }
                 
                 payload = string.Join(Environment.NewLine, modifiedMasterManifest);
 
@@ -967,6 +967,8 @@ private void ButtonUpload_Click(object sender, EventArgs e)
                 }
 
                 UploadList(modifiedMasterIngestURL, payload);
+                //MessageBox.Show("Uploading...");
+
             }
 
             try
@@ -1169,9 +1171,11 @@ private void ButtonUpload_Click(object sender, EventArgs e)
                             uploadUrl = ModifyUrl(uploadUrl, customClipName);
                         }
                         UploadList(uploadUrl, payload);
+                        //MessageBox.Show("Uploading...");
+
                     }
 
-                    
+
 
                 }
                 else
@@ -1308,7 +1312,7 @@ private void ButtonUpload_Click(object sender, EventArgs e)
             textBoxCustomClipName.SelectionStart = textBoxCustomClipName.Text.Length;
         }
 
-        static string ModifyUrl(string url, string prefix)
+        /*static string ModifyUrl(string url, string prefix)
         {
             if (url.EndsWith(".m3u8"))
             {
@@ -1321,6 +1325,27 @@ private void ButtonUpload_Click(object sender, EventArgs e)
                 }
             }
             return url; // Return the original string if it's not a valid URL or doesn't end with .m3u8
+        }*/
+
+
+        static string ModifyUrl(string input, string prefix)
+        {
+            // Regular expression to match .m3u8 URLs, including relative URLs
+            string urlPattern = @"(?:https?:\/\/|www\.|\/)[^\s""']+\.m3u8";
+
+            // Use Regex to find and replace the URL in the input string
+            return Regex.Replace(input, urlPattern, match =>
+            {
+                string url = match.Value; // Extract the matched URL
+                int lastSlashIndex = url.LastIndexOf('/');
+                if (lastSlashIndex != -1)
+                {
+                    string path = url.Substring(0, lastSlashIndex + 1); // Get the path up to the last slash
+                    string fileName = url.Substring(lastSlashIndex + 1); // Extract the file name
+                    return $"{path}{prefix}_{fileName}"; // Return the modified URL
+                }
+                return url; // Return the original URL if no changes are needed
+            });
         }
 
         /*private void StartWebServer(string url)
@@ -1339,7 +1364,7 @@ private void ButtonUpload_Click(object sender, EventArgs e)
                     HttpListenerContext context = listener.GetContext();
                     ThreadPool.QueueUserWorkItem((c) =>
                     {
-                       
+
 
                         try
                         {
